@@ -15,12 +15,10 @@ services:
         generateValue: true
 
   # 2. Frontend Static Site
-  - type: web
+  - type: static
     name: geminipayment-portal
-    env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
-    plan: free
     routes:
       # Rewrite rule to proxy API calls to backend
       - type: rewrite
