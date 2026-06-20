@@ -13,14 +13,6 @@ services:
         generateValue: true
       - key: JWT_SECRET_KEY
         generateValue: true
-      - key: DATABASE_URL
-        value: sqlite:////data/database.db
-      - key: UPLOAD_FOLDER
-        value: /data/uploads
-    disk:
-      name: gemini-data
-      mountPath: /data
-      sizeGB: 1
 
   # 2. Frontend Static Site
   - type: web
