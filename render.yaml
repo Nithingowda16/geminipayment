@@ -1,0 +1,36 @@
+services:
+  # 1. Backend Web Service
+  - type: web
+    name: geminipayment-backend
+    env: python
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: gunicorn --chdir backend "app:create_app()"
+    plan: free
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:////data/database.db
+      - key: UPLOAD_FOLDER
+        value: /data/uploads
+    disk:
+      name: gemini-data
+      mountPath: /data
+      sizeGB: 1
+
+  # 2. Frontend Static Site
+  - type: web
+    name: geminipayment-portal
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    plan: free
+    routes:
+      # Rewrite rule to proxy API calls to backend
+      - type: rewrite
+        source: /api/*
+        destination: https://geminipayment-backend.onrender.com/api/*
