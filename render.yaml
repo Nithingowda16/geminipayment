@@ -15,8 +15,9 @@ services:
         generateValue: true
 
   # 2. Frontend Static Site
-  - type: static
+  - type: web
     name: geminipayment-portal
+    env: static
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     routes:
